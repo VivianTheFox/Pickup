@@ -15,17 +15,23 @@ public class SpawnerBreakListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
-        PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, player.getItemInHand(), 1);
 
         if (block.getType() == Material.MOB_SPAWNER) {
             if (player.getItemInHand().getType() == Material.GOLD_PICKAXE) {
                 if (player.hasPermission("pickup.use")) {
+                    useTool(player); // Decrease tool durability
                     event.setCancelled(true);
                     block.setType(Material.AIR);
-                    damageEvent.setDamage(damageEvent.getDamage() - 1); // Decrease durability by 1
                     block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.MOB_SPAWNER, 1));
                 }
             }
         }
+    }
+
+    public void useTool(Player player) {
+        if(player.getItemInHand().getDurability() > 31) {
+            player.setItemInHand(null);
+        }
+        player.getItemInHand().setDurability((short)(player.getItemInHand().getDurability() + 1));
     }
 }
