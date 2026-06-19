@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PickupBlocksListener implements Listener {
@@ -16,97 +15,103 @@ public class PickupBlocksListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
-        PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, player.getItemInHand(), 1);
 
         // Check if the player has the right tool and permission for each block type
         if (block.getType() == Material.GRASS) {
             if (player.getItemInHand().getType() == Material.GOLD_SPADE && player.hasPermission("pickup.use")) {
+                useTool(player); // Decrease tool durability
                 event.setCancelled(true);  // Prevent normal block breaking
                 block.setType(Material.AIR);  // Set block to air
-                damageEvent.setDamage(damageEvent.getDamage() - 1); // Decrease durability by 1
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.GRASS, 1));
             }
         }
 
         if (block.getType() == Material.GLASS) {
             if (player.getItemInHand().getType() == Material.GOLD_PICKAXE && player.hasPermission("pickup.use")) {
+                useTool(player);
                 event.setCancelled(true);
                 block.setType(Material.AIR);
-                damageEvent.setDamage(damageEvent.getDamage() - 1);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.GLASS, 1));
             }
         }
 
         if (block.getType() == Material.GLOWSTONE) {
             if (player.getItemInHand().getType() == Material.GOLD_PICKAXE && player.hasPermission("pickup.use")) {
+                useTool(player);
                 event.setCancelled(true);
                 block.setType(Material.AIR);
-                damageEvent.setDamage(damageEvent.getDamage() - 1);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.GLOWSTONE, 1));
             }
         }
 
         if (block.getType() == Material.ICE) {
             if (player.getItemInHand().getType() == Material.GOLD_PICKAXE && player.hasPermission("pickup.use")) {
+                useTool(player);
                 event.setCancelled(true);
                 block.setType(Material.AIR);
-                damageEvent.setDamage(damageEvent.getDamage() - 1);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.ICE, 1));
             }
         }
 
         if (block.getType() == Material.SNOW_BLOCK) {
             if (player.getItemInHand().getType() == Material.GOLD_SPADE && player.hasPermission("pickup.use")) {
+                useTool(player);
                 event.setCancelled(true);
                 block.setType(Material.AIR);
-                damageEvent.setDamage(damageEvent.getDamage() - 1);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.SNOW_BLOCK, 1));
             }
         }
 
         if (block.getType() == Material.SNOW) {
             if (player.getItemInHand().getType() == Material.GOLD_SPADE && player.hasPermission("pickup.use")) {
+                useTool(player);
                 event.setCancelled(true);
                 block.setType(Material.AIR);
-                damageEvent.setDamage(damageEvent.getDamage() - 1);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.SNOW, 1));
             }
         }
 
         if (block.getType() == Material.COBBLESTONE_STAIRS) {
             if (player.getItemInHand().getType() == Material.GOLD_PICKAXE && player.hasPermission("pickup.use")) {
+                useTool(player);
                 event.setCancelled(true);
                 block.setType(Material.AIR);
-                damageEvent.setDamage(damageEvent.getDamage() - 1);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.COBBLESTONE_STAIRS, 1));
             }
         }
 
         if (block.getType() == Material.WOOD_STAIRS) {
             if ((player.getItemInHand().getType() == Material.GOLD_SWORD || player.getItemInHand().getType() == Material.GOLD_AXE) && player.hasPermission("pickup.use")) {
+                useTool(player);
                 event.setCancelled(true);
                 block.setType(Material.AIR);
-                damageEvent.setDamage(damageEvent.getDamage() - 1);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.WOOD_STAIRS, 1));
             }
         }
 
         if (block.getType() == Material.CLAY) {
             if (player.getItemInHand().getType() == Material.GOLD_SPADE && player.hasPermission("pickup.use")) {
+                useTool(player);
                 event.setCancelled(true);
                 block.setType(Material.AIR);
-                damageEvent.setDamage(damageEvent.getDamage() - 1);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.CLAY, 1));
             }
         }
 
         if (block.getType() == Material.CAKE_BLOCK) {
             if (player.getItemInHand().getType() == Material.GOLD_PICKAXE && player.hasPermission("pickup.use")) {
+                useTool(player);
                 event.setCancelled(true);
                 block.setType(Material.AIR);
-                damageEvent.setDamage(damageEvent.getDamage() - 1);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.CAKE_BLOCK, 1));
             }
         }
+    }
+
+    public void useTool(Player player) {
+        if(player.getItemInHand().getDurability() > 31) {
+            player.setItemInHand(null);
+        }
+        player.getItemInHand().setDurability((short)(player.getItemInHand().getDurability() + 1));
     }
 }
